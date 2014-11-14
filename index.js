@@ -14,17 +14,23 @@
  * Module dependencies.
  */
 
-module.exports = function send(childprocess, message) {
-  if (typeof childprocess.send !== 'function') {
+module.exports = function send(child, message) {
+  if (typeof child.send !== 'function') {
     // not a child process
-    return setImmediate(childprocess.emit.bind(childprocess, 'message', message));
+    return setImmediate(child.emit.bind(child, 'message', message));
   }
 
-  if (childprocess.connected) {
-    return childprocess.send(message);
+  // cluster.fork(): child.process is process
+  // childprocess.fork(): child is process
+  var connected = child.process ? child.process.connected : child.connected;
+
+  if (connected) {
+    return child.send(message);
   }
 
   // just log warnning message
-  console.warn('[%s][sendmessage] WARN pid#%s channel closed, nothing send',
-    Date(), process.pid);
+  var pid = child.process ? child.process.pid : child.pid;
+  var err = new Error('channel closed');
+  console.warn('[%s][sendmessage] WARN pid#%s channel closed, nothing send\nstack: %s',
+    Date(), pid, err.stack);
 };
