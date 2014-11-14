@@ -1,7 +1,7 @@
 {
   "name": "sendmessage",
-  "version": "0.0.0",
-  "description": "sendmessage",
+  "version": "1.0.0",
+  "description": "Send a cross process message if message channel is connected.",
   "main": "index.js",
   "scripts": {
     "test": "mocha --check-leaks -R spec -t 5000 -r should test/*.test.js",
@@ -34,7 +34,7 @@
     "email": "fengmk2@gmail.com"
   },
   "keywords": [
-    "sendmessage"
+    "sendmessage", "send", "cluster", "message", "channel closed"
   ],
   "engines": {
     "node": ">= 0.10.0"
