@@ -1,6 +1,6 @@
 {
   "name": "sendmessage",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Send a cross process message if message channel is connected.",
   "main": "index.js",
   "scripts": {
