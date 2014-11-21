@@ -14,7 +14,7 @@
  * Module dependencies.
  */
 
-var IS_NODE_DEV_RUNNER = /node\-dev$/.test(process.env._ || '');
+var IS_NODE_DEV_RUNNER = /\/node\-dev$/.test(process.env._ || '');
 
 module.exports = function send(child, message) {
   if (typeof child.send !== 'function') {
