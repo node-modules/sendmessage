@@ -14,16 +14,18 @@
  * Module dependencies.
  */
 
+var IS_NODE_DEV_RUNNER = /node\-dev$/.test(process.env._ || '');
+
 module.exports = function send(child, message) {
   if (typeof child.send !== 'function') {
     // not a child process
     return setImmediate(child.emit.bind(child, 'message', message));
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    // run with node-dev
+  if (IS_NODE_DEV_RUNNER) {
+    // run with node-dev, only one process
     // https://github.com/node-modules/sendmessage/issues/1
-    setImmediate(child.emit.bind(child, 'message', message));
+    return setImmediate(child.emit.bind(child, 'message', message));
   }
 
   // cluster.fork(): child.process is process
