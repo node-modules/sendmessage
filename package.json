@@ -1,8 +1,11 @@
 {
   "name": "sendmessage",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Send a cross process message if message channel is connected.",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "mocha --check-leaks -R spec -t 5000 -r should test/*.test.js",
     "test-cov": "node node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --check-leaks -t 5000 -r should test/*.test.js",
