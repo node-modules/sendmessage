@@ -15,6 +15,9 @@
  */
 
 var IS_NODE_DEV_RUNNER = /node\-dev$/.test(process.env._ || '');
+if (!IS_NODE_DEV_RUNNER && process.env.IS_NODE_DEV_RUNNER) {
+  IS_NODE_DEV_RUNNER = true;
+}
 
 module.exports = function send(child, message) {
   if (typeof child.send !== 'function') {
