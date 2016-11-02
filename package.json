@@ -15,16 +15,15 @@
     "cnpm": "npm install --registry=https://registry.npm.taobao.org",
     "contributors": "contributors -f plain -o AUTHORS"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "autod": "*",
     "contributors": "*",
-    "should": "*",
-    "jshint": "*",
     "istanbul": "*",
-    "mocha": "*"
+    "jshint": "*",
+    "mm": "^1.5.1",
+    "mocha": "*",
+    "should": "*"
   },
   "homepage": "https://github.com/node-modules/sendmessage",
   "repository": {
@@ -37,7 +36,11 @@
     "email": "fengmk2@gmail.com"
   },
   "keywords": [
-    "sendmessage", "send", "cluster", "message", "channel closed"
+    "sendmessage",
+    "send",
+    "cluster",
+    "message",
+    "channel closed"
   ],
   "engines": {
     "node": ">= 0.10.0"

@@ -25,7 +25,7 @@ module.exports = function send(child, message) {
     return setImmediate(child.emit.bind(child, 'message', message));
   }
 
-  if (IS_NODE_DEV_RUNNER) {
+  if (IS_NODE_DEV_RUNNER || process.env.SENDMESSAGE_ONE_PROCESS) {
     // run with node-dev, only one process
     // https://github.com/node-modules/sendmessage/issues/1
     return setImmediate(child.emit.bind(child, 'message', message));
