@@ -67,6 +67,8 @@ If a process is not child process, this will just call `process.emit('message', 
 sendmessage(process, {hello: 'this is a message to master'});
 ```
 
+You can switch to `process.emit('message', message)` using `process.env.SENDMESSAGE_ONE_PROCESS`
+
 ## Test
 
 ```bash

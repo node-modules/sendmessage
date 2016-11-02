@@ -18,9 +18,12 @@ var path = require('path');
 var should = require('should');
 var childprocess = require('child_process');
 var cluster = require('cluster');
+var mm = require('mm');
 var sendmessage = require('../');
 
 describe('sendmessage.test.js', function () {
+  afterEach(mm.restore);
+
   describe('single process', function () {
     it('should emit message when process is not child process', function (done) {
       process.once('message', function (message) {
@@ -146,4 +149,30 @@ describe('sendmessage.test.js', function () {
       });
     });
   });
+
+  it('should emit when SENDMESSAGE_ONE_PROCESS = true', function(done) {
+    var childfile = path.join(__dirname, 'child.js');
+    var child = childprocess.fork(childfile);
+    mm(process.env, 'SENDMESSAGE_ONE_PROCESS', 'true');
+    var msg;
+    child.once('message', function (message) {
+      message.should.eql({
+        from: 'child',
+        hi: 'this is a message send to master'
+      });
+
+      sendmessage(child, {
+        from: 'master',
+        reply: 'this is a reply message send to child'
+      });
+
+      child.once('message', function(msg) {
+        msg.should.eql({
+          from: 'master',
+          reply: 'this is a reply message send to child',
+        });
+        done();
+      });
+    });
+  })
 });
