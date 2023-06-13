@@ -8,14 +8,16 @@
   ],
   "scripts": {
     "test": "mocha --exit -t 5000 test/*.test.js",
-    "ci": "c8 npm test",
-    "lint": "eslint ."
+    "ci": "c8 -r lcov -r text -r text-summary npm test",
+    "lint": "eslint .",
+    "contributors": "git-contributor"
   },
   "dependencies": {},
   "devDependencies": {
     "c8": "^7.14.0",
     "eslint": "^8.42.0",
     "eslint-config-egg": "^12.2.1",
+    "git-contributor": "^2.1.5",
     "mm": "^3.3.0",
     "mocha": "^10.2.0",
     "should": "*"
@@ -27,8 +29,7 @@
     "web": "https://github.com/node-modules/sendmessage"
   },
   "bugs": {
-    "url": "https://github.com/node-modules/sendmessage/issues",
-    "email": "fengmk2@gmail.com"
+    "url": "https://github.com/node-modules/sendmessage/issues"
   },
   "keywords": [
     "sendmessage",
