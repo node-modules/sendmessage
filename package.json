@@ -7,22 +7,16 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --check-leaks -R spec -t 5000 -r should test/*.test.js",
-    "test-cov": "node node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --check-leaks -t 5000 -r should test/*.test.js",
-    "test-travis": "node node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- --check-leaks -t 5000 -r should test/*.test.js",
-    "jshint": "jshint .",
-    "autod": "autod -w --prefix '~'",
-    "cnpm": "npm install --registry=https://registry.npm.taobao.org",
-    "contributors": "contributors -f plain -o AUTHORS"
+    "test": "egg-bin test",
+    "ci": "egg-bin cov",
+    "lint": "eslint ."
   },
   "dependencies": {},
   "devDependencies": {
-    "autod": "*",
-    "contributors": "*",
-    "istanbul": "*",
-    "jshint": "*",
-    "mm": "^1.5.1",
-    "mocha": "*",
+    "egg-bin": "^6.4.1",
+    "eslint": "^8.42.0",
+    "eslint-config-egg": "^12.2.1",
+    "mm": "^3.3.0",
     "should": "*"
   },
   "homepage": "https://github.com/node-modules/sendmessage",
@@ -43,8 +37,8 @@
     "channel closed"
   ],
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 14.17.0"
   },
-  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)",
+  "author": "fengmk2 <fengmk2@gmail.com> (https://github.com/fengmk2)",
   "license": "MIT"
 }
