@@ -9,7 +9,7 @@ const sendmessage = require('../');
 describe('sendmessage.test.js', function() {
   afterEach(mm.restore);
 
-  describe.skip('single process', function() {
+  describe('single process', function() {
     it('should emit message when process is not child process', function(done) {
       process.once('message', function(message) {
         message.should.eql({

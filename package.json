@@ -7,16 +7,17 @@
     "index.js"
   ],
   "scripts": {
-    "test": "egg-bin test",
-    "ci": "egg-bin cov",
+    "test": "mocha --exit test/*.test.js",
+    "ci": "c8 npm test",
     "lint": "eslint ."
   },
   "dependencies": {},
   "devDependencies": {
-    "egg-bin": "^6.4.1",
+    "c8": "^7.14.0",
     "eslint": "^8.42.0",
     "eslint-config-egg": "^12.2.1",
     "mm": "^3.3.0",
+    "mocha": "^10.2.0",
     "should": "*"
   },
   "homepage": "https://github.com/node-modules/sendmessage",
