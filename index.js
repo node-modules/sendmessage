@@ -13,6 +13,7 @@
 /**
  * Module dependencies.
  */
+var { isMainThread, parentPort } = require('worker_threads');
 
 var IS_NODE_DEV_RUNNER = /node\-dev$/.test(process.env._ || '');
 if (!IS_NODE_DEV_RUNNER && process.env.IS_NODE_DEV_RUNNER) {
@@ -20,7 +21,11 @@ if (!IS_NODE_DEV_RUNNER && process.env.IS_NODE_DEV_RUNNER) {
 }
 
 module.exports = function send(child, message) {
-  if (typeof child.send !== 'function') {
+  if (
+    isMainThread // not in worker thread
+    && typeof child.postMessage !== 'function' // child is not worker
+    && typeof child.send !== 'function'
+  ) {
     // not a child process
     return setImmediate(child.emit.bind(child, 'message', message));
   }
@@ -29,6 +34,15 @@ module.exports = function send(child, message) {
     // run with node-dev, only one process
     // https://github.com/node-modules/sendmessage/issues/1
     return setImmediate(child.emit.bind(child, 'message', message));
+  }
+
+  // child is worker
+  if (typeof child.postMessage === 'function') {
+    return child.postMessage(message)
+  }
+  // in worker thread
+  if (!isMainThread) {
+    return parentPort.postMessage(message)
   }
 
   // cluster.fork(): child.process is process

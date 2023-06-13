@@ -18,6 +18,7 @@ var path = require('path');
 var should = require('should');
 var childprocess = require('child_process');
 var cluster = require('cluster');
+var workerThreads = require('worker_threads');
 var mm = require('mm');
 var sendmessage = require('../');
 
@@ -143,6 +144,35 @@ describe('sendmessage.test.js', function () {
           sendmessage(child, {
             from: 'master',
             hi: 'here?'
+          });
+          done();
+        });
+      });
+    });
+  });
+
+  describe('worker_threads', function () {
+    it('should send cross process message', function (done) {
+      var childfile = path.join(__dirname, 'child.js');
+      const worker = new workerThreads.Worker(childfile)
+      worker.once('message', function (message) {
+        message.should.eql({
+          from: 'child',
+          hi: 'this is a message send to master'
+        });
+
+        sendmessage(worker, {
+          from: 'master',
+          reply: 'this is a reply message send to child'
+        });
+
+        worker.once('message', function (message) {
+          message.should.eql({
+            from: 'child',
+            got: {
+              from: 'master',
+              reply: 'this is a reply message send to child'
+            }
           });
           done();
         });
