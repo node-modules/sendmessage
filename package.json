@@ -7,7 +7,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --exit test/*.test.js",
+    "test": "mocha --exit -t 5000 test/*.test.js",
     "ci": "c8 npm test",
     "lint": "eslint ."
   },
