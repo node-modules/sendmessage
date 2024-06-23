@@ -1,32 +1,36 @@
 {
   "name": "sendmessage",
   "version": "2.0.0",
+  "engines": {
+    "node": ">= 18.19.0"
+  },
   "description": "Send a cross process message if message channel is connected.",
-  "main": "index.js",
-  "files": [
-    "index.js"
-  ],
   "scripts": {
-    "test": "mocha --exit -t 5000 test/*.test.js",
+    "lint": "eslint --cache src --ext .ts",
+    "pretest": "npm run prepublishOnly && attw --pack",
+    "test": "npm run lint && mocha --exit -t 5000 test/*.test.js",
     "ci": "c8 -r lcov -r text -r text-summary npm test",
-    "lint": "eslint .",
-    "contributors": "git-contributor"
+    "prepublishOnly": "tshy && tshy-after"
   },
   "dependencies": {},
   "devDependencies": {
-    "c8": "^7.14.0",
-    "eslint": "^8.42.0",
-    "eslint-config-egg": "^12.2.1",
-    "git-contributor": "^2.1.5",
-    "mm": "^3.3.0",
-    "mocha": "^10.2.0",
-    "should": "*"
+    "@arethetypeswrong/cli": "^0.15.3",
+    "@eggjs/tsconfig": "1",
+    "@types/mocha": "10",
+    "@types/node": "20",
+    "c8": "^10.1.2",
+    "eslint": "8",
+    "eslint-config-egg": "13",
+    "mm": "3",
+    "mocha": "^10.4.0",
+    "tshy": "1",
+    "tshy-after": "1",
+    "typescript": "5"
   },
   "homepage": "https://github.com/node-modules/sendmessage",
   "repository": {
     "type": "git",
-    "url": "git://github.com/node-modules/sendmessage.git",
-    "web": "https://github.com/node-modules/sendmessage"
+    "url": "git://github.com/node-modules/sendmessage.git"
   },
   "bugs": {
     "url": "https://github.com/node-modules/sendmessage/issues"
@@ -38,9 +42,34 @@
     "message",
     "channel closed"
   ],
-  "engines": {
-    "node": ">= 14.17.0"
-  },
   "author": "fengmk2 <fengmk2@gmail.com> (https://github.com/fengmk2)",
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module",
+  "tshy": {
+    "exports": {
+      ".": "./src/index.ts",
+      "./package.json": "./package.json"
+    }
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "source": "./src/index.ts",
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "source": "./src/index.ts",
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "types": "./dist/commonjs/index.d.ts",
+  "main": "./dist/commonjs/index.js"
 }

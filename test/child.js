@@ -1,5 +1,5 @@
-const { isMainThread, parentPort } = require('worker_threads');
-const sendmessage = require('..');
+import { isMainThread, parentPort } from 'node:worker_threads';
+import sendmessage from '../dist/esm/index.js';
 
 const listener = function(message) {
   if (message.disconnect) {
@@ -11,7 +11,9 @@ const listener = function(message) {
     got: message,
   });
 };
+
 process.on('message', listener);
+
 if (!isMainThread) {
   // worker thread
   parentPort.on('message', listener);
