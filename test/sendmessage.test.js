@@ -1,18 +1,23 @@
-const path = require('path');
-require('should');
-const childprocess = require('child_process');
-const cluster = require('cluster');
-const workerThreads = require('worker_threads');
-const mm = require('mm');
-const sendmessage = require('../');
+import { strict as assert } from 'node:assert';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import childprocess from 'node:child_process';
+import cluster from 'node:cluster';
+import workerThreads from 'node:worker_threads';
+import mm from 'mm';
+import sendmessage from '../dist/esm/index.js';
 
-describe('sendmessage.test.js', function() {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const childFile = path.join(__dirname, 'child.js');
+
+describe('sendmessage.test.js', () => {
   afterEach(mm.restore);
 
-  describe('single process', function() {
-    it('should emit message when process is not child process', function(done) {
-      process.once('message', function(message) {
-        message.should.eql({
+  describe('single process', () => {
+    it('should emit message when process is not child process', done => {
+      process.once('message', message => {
+        assert.deepEqual(message, {
           foo: 'bar',
         });
         done();
@@ -21,12 +26,11 @@ describe('sendmessage.test.js', function() {
     });
   });
 
-  describe('child_process.fork()', function() {
-    it('should send cross process message', function(done) {
-      const childfile = path.join(__dirname, 'child.js');
-      const child = childprocess.fork(childfile);
+  describe('child_process.fork()', () => {
+    it('should send cross process message', done => {
+      const child = childprocess.fork(childFile);
       child.once('message', function(message) {
-        message.should.eql({
+        assert.deepEqual(message, {
           from: 'child',
           hi: 'this is a message send to master',
         });
@@ -37,7 +41,7 @@ describe('sendmessage.test.js', function() {
         });
 
         child.once('message', function(message) {
-          message.should.eql({
+          assert.deepEqual(message, {
             from: 'child',
             got: {
               from: 'master',
@@ -49,11 +53,10 @@ describe('sendmessage.test.js', function() {
       });
     });
 
-    it('should show warnning message when channel closed', function(done) {
-      const childfile = path.join(__dirname, 'child.js');
-      const child = childprocess.fork(childfile);
+    it('should show warning message when channel closed', done => {
+      const child = childprocess.fork(childFile);
       child.once('message', function(message) {
-        message.should.eql({
+        assert.deepEqual(message, {
           from: 'child',
           hi: 'this is a message send to master',
         });
@@ -63,7 +66,7 @@ describe('sendmessage.test.js', function() {
           disconnect: true,
         });
 
-        child.once('disconnect', function() {
+        child.once('disconnect', () => {
           console.log('child#%d disconnected', child.pid);
           sendmessage(child, {
             from: 'master',
@@ -75,15 +78,14 @@ describe('sendmessage.test.js', function() {
     });
   });
 
-  describe('cluster.fork()', function() {
-    it('should send cross process message', function(done) {
-      const childfile = path.join(__dirname, 'child.js');
-      cluster.setupMaster({
-        exec: childfile,
+  describe('cluster.fork()', () => {
+    it('should send cross process message', done => {
+      cluster.setupPrimary({
+        exec: childFile,
       });
       const child = cluster.fork();
       child.once('message', function(message) {
-        message.should.eql({
+        assert.deepEqual(message, {
           from: 'child',
           hi: 'this is a message send to master',
         });
@@ -94,7 +96,7 @@ describe('sendmessage.test.js', function() {
         });
 
         child.once('message', function(message) {
-          message.should.eql({
+          assert.deepEqual(message, {
             from: 'child',
             got: {
               from: 'master',
@@ -106,14 +108,13 @@ describe('sendmessage.test.js', function() {
       });
     });
 
-    it('should show warnning message when channel closed', function(done) {
-      const childfile = path.join(__dirname, 'child.js');
-      cluster.setupMaster({
-        exec: childfile,
+    it('should show warning message when channel closed', done => {
+      cluster.setupPrimary({
+        exec: childFile,
       });
       const child = cluster.fork();
       child.once('message', function(message) {
-        message.should.eql({
+        assert.deepEqual(message, {
           from: 'child',
           hi: 'this is a message send to master',
         });
@@ -123,7 +124,7 @@ describe('sendmessage.test.js', function() {
           disconnect: true,
         });
 
-        child.once('disconnect', function() {
+        child.once('disconnect', () => {
           console.log('child#%d disconnected', child.process.pid);
           sendmessage(child, {
             from: 'master',
@@ -135,12 +136,11 @@ describe('sendmessage.test.js', function() {
     });
   });
 
-  describe('worker_threads', function() {
-    it('should send cross process message', function(done) {
-      const childfile = path.join(__dirname, 'child.js');
-      const worker = new workerThreads.Worker(childfile);
+  describe('worker_threads', () => {
+    it('should send cross process message', done => {
+      const worker = new workerThreads.Worker(childFile);
       worker.once('message', function(message) {
-        message.should.eql({
+        assert.deepEqual(message, {
           from: 'child',
           hi: 'this is a message send to master',
         });
@@ -151,7 +151,7 @@ describe('sendmessage.test.js', function() {
         });
 
         worker.once('message', function(message) {
-          message.should.eql({
+          assert.deepEqual(message, {
             from: 'child',
             got: {
               from: 'master',
@@ -165,12 +165,11 @@ describe('sendmessage.test.js', function() {
   });
 
   describe('SENDMESSAGE_ONE_PROCESS', () => {
-    it('should emit when SENDMESSAGE_ONE_PROCESS = true', function(done) {
-      const childfile = path.join(__dirname, 'child.js');
-      const child = childprocess.fork(childfile);
+    it('should emit when SENDMESSAGE_ONE_PROCESS = true', done => {
+      const child = childprocess.fork(childFile);
       mm(process.env, 'SENDMESSAGE_ONE_PROCESS', 'true');
       child.once('message', function(message) {
-        message.should.eql({
+        assert.deepEqual(message, {
           from: 'child',
           hi: 'this is a message send to master',
         });
@@ -181,7 +180,7 @@ describe('sendmessage.test.js', function() {
         });
 
         child.once('message', function(msg) {
-          msg.should.eql({
+          assert.deepEqual(msg, {
             from: 'master',
             reply: 'this is a reply message send to child',
           });
