@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.0.0](https://github.com/node-modules/sendmessage/compare/v2.0.0...v3.0.0) (2024-06-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop Node.js < 18.19.0 support
+
+part of https://github.com/eggjs/egg/issues/3644
+
+https://github.com/eggjs/egg/issues/5257
+
+### Features
+
+* support cjs and esm both by tshy ([#6](https://github.com/node-modules/sendmessage/issues/6)) ([30acc65](https://github.com/node-modules/sendmessage/commit/30acc65d9359531ad817ccb8195af791805a63c5))
+
 ## [2.0.0](https://github.com/node-modules/sendmessage/compare/v1.1.0...v2.0.0) (2023-06-13)
 
 
