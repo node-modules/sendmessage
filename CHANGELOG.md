@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/node-modules/sendmessage/compare/v3.0.0...v3.0.1) (2024-12-11)
+
+
+### Bug Fixes
+
+* export sendmessage function ([#7](https://github.com/node-modules/sendmessage/issues/7)) ([34ad0d0](https://github.com/node-modules/sendmessage/commit/34ad0d011679c716e11a786ef50f98cfd7f9b526))
+
 ## [3.0.0](https://github.com/node-modules/sendmessage/compare/v2.0.0...v3.0.0) (2024-06-23)
 
 
