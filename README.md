@@ -27,7 +27,7 @@ npm install sendmessage --save
 
 ```ts
 import { fork } from 'node:child_process';
-import sendmessage from 'sendmessage';
+import { sendmessage } from 'sendmessage';
 
 const worker = fork('./worker.js');
 
@@ -37,7 +37,7 @@ sendmessage(worker, { hi: 'this is a message to worker' });
 ### worker.js
 
 ```ts
-import sendmessage from 'sendmessage';
+import { sendmessage } from 'sendmessage';
 
 sendmessage(process, { hello: 'this is a message to master' });
 ```

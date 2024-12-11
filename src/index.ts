@@ -68,3 +68,5 @@ export default function sendmessage(child: ChildProcessOrWorker, message: unknow
   console.warn('[%s][sendmessage] WARN pid#%s channel closed, nothing send\nstack: %s',
     Date(), pid, err.stack);
 }
+
+export { sendmessage };

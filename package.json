@@ -12,18 +12,17 @@
     "ci": "c8 -r lcov -r text -r text-summary npm test",
     "prepublishOnly": "tshy && tshy-after"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.15.3",
+    "@arethetypeswrong/cli": "^0.17.1",
     "@eggjs/tsconfig": "1",
     "@types/mocha": "10",
-    "@types/node": "20",
+    "@types/node": "22",
     "c8": "^10.1.2",
     "eslint": "8",
-    "eslint-config-egg": "13",
+    "eslint-config-egg": "14",
     "mm": "3",
-    "mocha": "^10.4.0",
-    "tshy": "1",
+    "mocha": "^11.0.1",
+    "tshy": "^3.0.2",
     "tshy-after": "1",
     "typescript": "5"
   },
@@ -54,12 +53,10 @@
   "exports": {
     ".": {
       "import": {
-        "source": "./src/index.ts",
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "require": {
-        "source": "./src/index.ts",
         "types": "./dist/commonjs/index.d.ts",
         "default": "./dist/commonjs/index.js"
       }
@@ -71,5 +68,6 @@
     "src"
   ],
   "types": "./dist/commonjs/index.d.ts",
-  "main": "./dist/commonjs/index.js"
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js"
 }

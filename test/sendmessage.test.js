@@ -5,7 +5,7 @@ import childprocess from 'node:child_process';
 import cluster from 'node:cluster';
 import workerThreads from 'node:worker_threads';
 import mm from 'mm';
-import sendmessage from '../dist/esm/index.js';
+import sendmessage, { sendmessage as sendmessage2 } from '../dist/esm/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,7 +35,7 @@ describe('sendmessage.test.js', () => {
           hi: 'this is a message send to master',
         });
 
-        sendmessage(child, {
+        sendmessage2(child, {
           from: 'master',
           reply: 'this is a reply message send to child',
         });
