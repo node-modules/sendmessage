@@ -1,6 +1,7 @@
 import { debuglog } from 'node:util';
 import { isMainThread, parentPort } from 'node:worker_threads';
 import { EventEmitter } from 'node:events';
+import cluster from 'node:cluster';
 
 const debug = debuglog('sendmessage');
 
@@ -61,6 +62,13 @@ export default function sendmessage(child: ChildProcessOrWorker, message: unknow
 
   // childprocess.fork(): child is process
   if (child.connected) {
+    debug('child.connected: %s, cluster.isWorker: %s, cluster.isPrimary: %s',
+      child.connected, cluster.isWorker, cluster.isPrimary);
+    if (cluster.isWorker || cluster.isPrimary) {
+      debug('child is cluster.fork() process, send: %j', message);
+      return child.send!(message);
+    }
+
     if (process.env.VITEST === 'true' && process.env.VITEST_WORKER_ID) {
       debug('child is vitest worker process, VITEST_WORKER_ID: %s, emit sendmessage-to-self: %j',
         process.env.VITEST_WORKER_ID, message);
