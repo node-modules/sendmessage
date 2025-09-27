@@ -62,9 +62,9 @@ export default function sendmessage(child: ChildProcessOrWorker, message: unknow
   // childprocess.fork(): child is process
   if (child.connected) {
     if (process.env.VITEST === 'true' && process.env.VITEST_WORKER_ID) {
-      debug('child is vitest worker process, VITEST_WORKER_ID: %s, emit message: %j',
+      debug('child is vitest worker process, VITEST_WORKER_ID: %s, emit sendmessage-to-self: %j',
         process.env.VITEST_WORKER_ID, message);
-      return setImmediate(child.emit.bind(child, 'message', message));
+      return setImmediate(child.emit.bind(child, 'sendmessage-to-self', message));
     }
     debug('child is childprocess.fork() process, send: %j', message);
     return child.send!(message);
