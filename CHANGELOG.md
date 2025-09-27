@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>3.0.2 (2025-09-27)</small>
+
+* fix: use npm trust publish (#9) ([abc5a8e](https://github.com/node-modules/sendmessage/commit/abc5a8e)), closes [#9](https://github.com/node-modules/sendmessage/issues/9)
+
 ## [3.0.1](https://github.com/node-modules/sendmessage/compare/v3.0.0...v3.0.1) (2024-12-11)
 
 
