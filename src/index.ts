@@ -54,11 +54,19 @@ export default function sendmessage(child: ChildProcessOrWorker, message: unknow
   }
 
   // cluster.fork(): child.process is process
-  // childprocess.fork(): child is process
-  const connected = child.process ? child.process.connected : child.connected;
+  if (child.process?.connected) {
+    debug('child is cluster.fork() process, send: %j', message);
+    return child.send!(message);
+  }
 
-  if (connected) {
-    debug('child is process, send: %j', message);
+  // childprocess.fork(): child is process
+  if (child.connected) {
+    if (process.env.VITEST === 'true' && process.env.VITEST_WORKER_ID) {
+      debug('child is vitest worker process, VITEST_WORKER_ID: %s, emit message: %j',
+        process.env.VITEST_WORKER_ID, message);
+      return setImmediate(child.emit.bind(child, 'message', message));
+    }
+    debug('child is childprocess.fork() process, send: %j', message);
     return child.send!(message);
   }
 
