@@ -62,9 +62,8 @@ export default function sendmessage(child: ChildProcessOrWorker, message: unknow
 
   // childprocess.fork(): child is process
   if (child.connected) {
-    debug('child.connected: %s, cluster.isWorker: %s, cluster.isPrimary: %s',
-      child.connected, cluster.isWorker, cluster.isPrimary);
-    if (cluster.isWorker || cluster.isPrimary) {
+    debug('child.connected: %s, cluster.isWorker: %s', child.connected, cluster.isWorker);
+    if (cluster.isWorker) {
       debug('child is cluster.fork() process, send: %j', message);
       return child.send!(message);
     }
